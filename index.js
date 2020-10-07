@@ -5,10 +5,21 @@ const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
 
+// Show loading
+const showLoadingSpinner = () => {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+};
+// Hide loading
+const removeLoadingSpinner = () => {
+  quoteContainer.hidden = false;
+  loader.hidden = true;
+};
+
 // Get quote from API
 let apiQuotes = [];
 const getQuote = async () => {
-  loading();
+  showLoadingSpinner();
   const apiURL = 'https://type.fit/api/quotes';
   try {
     const response = await fetch(apiURL);
@@ -20,7 +31,7 @@ const getQuote = async () => {
 };
 
 const newQuote = () => {
-  loading();
+  showLoadingSpinner();
   //pick a random quote from api array
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
   if (!quote.author) {
@@ -35,18 +46,7 @@ const newQuote = () => {
   }
   //  Set Quote, Hide Loader
   quoteText.innerText = quote.text;
-  loadComplete();
-};
-
-// Show loading
-const loading = () => {
-  loader.hidden = false;
-  quoteContainer.hidden = true;
-};
-// Hide loading
-const loadComplete = () => {
-  quoteContainer.hidden = false;
-  loader.hidden = true;
+  removeLoadingSpinner();
 };
 
 //Tweet Quote
